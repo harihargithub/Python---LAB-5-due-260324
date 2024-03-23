@@ -1,0 +1,47 @@
+Objective:
+1. To build a Machine learning regression model to predict the selling price of the used cars based on the different input features like fuel_type, kms_driven, type of transmission etc.
+2. Deploy the machine learning model with the help of the flask framework.
+
+pip install pandas numpy matplotlib seaborn scikit-learn
+
+ **Car_Name**: Name of the car
+- **Year**: Year of Purchase
+- **Selling Price (target)**: Selling price of the car in lakhs
+- **Present Price**: Present price of the car in lakhs
+- **Kms_Driven**: kilometers driven
+- **Fuel_Type**: Petrol/diesel/CNG
+- **Seller_Type**: Dealer or Indiviual
+- **Transmission**: Manual or Automatic
+- **Owner**: first, second or third owner
+
+Sure, you can modify the code to automatically encode all columns of type 'object'. Here's how you can do it:
+
+```python
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+
+# Create a dictionary to store the mapping from labels to numbers for each column
+label_mapping = {}
+
+# Automatically select columns of type 'object'
+columns_to_encode = final_dataset.select_dtypes(include=['object']).columns
+
+for column in columns_to_encode:
+    final_dataset[column] = le.fit_transform(final_dataset[column])
+    label_mapping[column] = dict(zip(le.classes_, le.transform(le.classes_)))
+
+# Print the label_mapping dictionary
+for column, mapping in label_mapping.items():
+    print(f'{column}: {mapping}')
+```
+
+This code first imports the LabelEncoder class from sklearn.preprocessing. Then it creates a LabelEncoder object and a dictionary to store the mappings. After that, it automatically selects all columns of type 'object' and fits and transforms each of these columns, replacing the original column with the encoded data. It also stores the mapping from labels to numbers for each column in the label_mapping dictionary. Finally, it prints the label_mapping dictionary.
+
+Index(['Selling_Price', 'Present_Price', 'Kms_Driven', 'Fuel_Type',
+       'Seller_Type', 'Transmission', 'Owner', 'age_of_the_car'],
+      dtype='object')
+
+      Fuel_Type: {'CNG': 0, 'Diesel': 1, 'Petrol': 2}
+Seller_Type: {'Dealer': 0, 'Individual': 1}
+Transmission: {'Automatic': 0, 'Manual': 1}
