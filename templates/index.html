@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Car Price Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .container {
+            max-height: 80vh;
+            /* Adjust this value to change the maximum height of the container */
+            overflow-y: auto;
+            /* Add a scrollbar if the content exceeds the maximum height */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="my-4">Car Price Prediction</h1>
+        <form action="/predict" method="post">
+            <div class="form-group">
+                <label for="present_price">Present Price:</label>
+                <input type="text" id="present_price" name="present_price" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="kms_driven">Kms Driven:</label>
+                <input type="text" id="kms_driven" name="kms_driven" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="fuel_type">Fuel Type:</label>
+                <input type="text" id="fuel_type" name="fuel_type" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="seller_type">Seller Type:</label>
+                <input type="text" id="seller_type" name="seller_type" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="transmission">Transmission:</label>
+                <input type="text" id="transmission" name="transmission" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="owner">Owner:</label>
+                <input type="text" id="owner" name="owner" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="age_of_the_car">Age of the Car:</label>
+                <input type="text" id="age_of_the_car" name="age_of_the_car" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+        {% if prediction_text %}
+        <div class="alert alert-info mt-4">
+            <h2>{{ prediction_text }}</h2>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
