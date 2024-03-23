@@ -41,6 +41,10 @@ This code first imports the LabelEncoder class from sklearn.preprocessing. Then 
 Index(['Selling_Price', 'Present_Price', 'Kms_Driven', 'Fuel_Type',
        'Seller_Type', 'Transmission', 'Owner', 'age_of_the_car'],
       dtype='object')
+        
+          eg. 0 for CNG, 1 for Diesel & 2 for Petrol
+          eg. 0 for Dealer & 1 for Individual
+          eg. 0 for Automatic and 1 for Manual
 
       Fuel_Type: {'CNG': 0, 'Diesel': 1, 'Petrol': 2}
 Seller_Type: {'Dealer': 0, 'Individual': 1}
@@ -495,4 +499,88 @@ if __name__ == "__main__":
 
 Now, all log messages with a severity level of INFO or higher will be written to a file named `app.log`.
 
+The fields in the HTML form are matched in the `app.py` Flask application through the `request.form` object. When the form is submitted, a POST request is sent to the `/predict` route in the Flask application. The data from the form fields is included in this request as form data.
 
+In the `/predict` route, `data = request.form` is used to get the form data. `request.form` is a special type of dict in Flask that contains all the form fields as key-value pairs. The keys are the `name` attributes of the form fields, and the values are the data entered by the user.
+
+The line `prediction = model.predict([np.array(list(map(float, data.values())))])` is used to make a prediction with the model. `data.values()` gets all the values from the form data, `map(float, data.values())` converts these values to floats, and `list(map(float, data.values()))` converts this to a list. This list is then converted to a numpy array and passed to `model.predict()` to make a prediction.
+
+The predicted value is then passed to the `render_template` function as `prediction_text`, which is used in the HTML to display the prediction result to the user. The `{% if prediction_text %}` block in the HTML is a Jinja2 template conditional that checks if `prediction_text` is not None or empty. If `prediction_text` is not None or empty, the prediction result is displayed in a div.
+
+Yes, the order of the fields in the HTML form does not matter when fetching the data in Flask. The `request.form` object in Flask is a type of dictionary where each key-value pair corresponds to a form field and its value. 
+
+When you submit the form, the browser sends a POST request to the server with the form data. The form data is included in the request body, and each key-value pair in the form data corresponds to a form field name (the key) and its value.
+
+In your Flask app, when you do `data = request.form`, you're getting this form data as a dictionary. The order of the fields in the dictionary does not necessarily match the order of the fields in the form. 
+
+So, even if you change the order of the fields in the HTML form, as long as the field names (`name` attribute in the HTML form) match the keys you're using to access the data in your Flask app, you'll still get the correct data.
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Car Price Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url('/static/Background.jpg') no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .container {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="my-4">
+            <img src="/static/logo.jpg" alt="Logo"> Car Price Prediction
+        </h1>
+        <!-- Rest of your form -->
+    </div>
+</body>
+
+</html>
+
+
+To flash a message at the center of the form, you can use Flask's `flash` function to send a message to the next request, which you can then display in your HTML. Here's how you can modify your Python code and HTML:
+
+In your Python code, import the `flash` function and use it to send a message:
+
+```python
+from flask import Flask, request, render_template, flash
+
+# ...
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    # ...
+    flash("Predicted resale Price is {}".format(output))
+    return render_template("index.html")
+```
+
+In your HTML, use the `get_flashed_messages` function to get and display the messages:
+
+```html
+<div class="container">
+    <!-- ... -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-info text-center">
+        {% for message in messages %}
+        <h2>{{ message }}</h2>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <!-- ... -->
+</div>
+```
+
+The `get_flashed_messages` function gets all the messages that were flashed. The `{% with %}` statement is used to assign the messages to a variable. The `{% if %}` statement checks if there are any messages, and if there are, it displays each one in a `<h2>` element inside a Bootstrap alert. The `text-center` class is used to center the text.

@@ -1,9 +1,10 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, flash
 import numpy as np
 import pickle
 import logging
 
 app = Flask(__name__)
+app.secret_key = "super secret"
 
 # Load the model
 model = pickle.load(open("random_forest_model.pkl", "rb"))
@@ -29,9 +30,8 @@ def predict():
     logging.info("Prediction: %s", output)
 
     # Render the index.html template with the prediction result
-    return render_template(
-        "index.html", prediction_text="Predicted Price should be {}".format(output)
-    )
+    flash("Predicted resale Price is {}".format(output))
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
