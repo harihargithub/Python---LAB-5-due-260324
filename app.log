@@ -20,3 +20,4 @@ INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 13:11:15] "POST /predict HTTP/1.1" 200 
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 13:16:51] "GET / HTTP/1.1" 200 -
 INFO:root:Prediction: 2.7715000000000014
 INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 13:17:25] "POST /predict HTTP/1.1" 200 -
+INFO:werkzeug:127.0.0.1 - - [23/Mar/2024 13:19:42] "[33mGET /enter_details HTTP/1.1[0m" 404 -
