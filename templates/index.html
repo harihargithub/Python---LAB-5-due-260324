@@ -28,6 +28,20 @@
         input {
             background-color: rgb(234, 248, 181) !important;
         }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 2s;
+        }
     </style>
 </head>
 
@@ -75,14 +89,30 @@
         </form>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <div class="alert alert-info text-center">
+        <div id="flashed-messages" class="alert alert-info text-center">
             {% for message in messages %}
-            <h2>{{ message }}</h2>
+            <h2 class="fade-in">{{ message }}</h2>
             {% endfor %}
         </div>
+
         {% endif %}
         {% endwith %}
     </div>
 </body>
+
+<script>
+    // Scroll to the flashed messages when a message is flashed
+    document.addEventListener('DOMContentLoaded', (event) => {
+        console.log('DOM fully loaded and parsed');
+        setTimeout(function () {
+            var message = '{{ message }}';
+            console.log('Message:', message);
+            if (message) {
+                console.log('Scrolling to message');
+                document.getElementById('flashed-messages').scrollIntoView();
+            }
+        }, 100); // Delay of 100ms
+    });
+</script>
 
 </html>
